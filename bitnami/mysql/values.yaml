@@ -8,13 +8,13 @@
 ## @param global.storageClass Global StorageClass for Persistent Volume(s)
 ##
 global:
-  imageRegistry: ""
+  imageRegistry: "mirror.whnlp.k8s.com:8989"
   ## E.g.
   ## imagePullSecrets:
   ##   - myRegistryKeySecretName
   ##
   imagePullSecrets: []
-  storageClass: ""
+  storageClass: "mysql-volume"
 
 ## @section Common parameters
 
@@ -69,8 +69,8 @@ diagnosticMode:
 ##
 image:
   registry: docker.io
-  repository: bitnami/mysql
-  tag: 8.0.29-debian-10-r2
+  repository: bitnami/mysql-server
+  tag: 5.75.7.38-debian-10-r14
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -96,18 +96,18 @@ auth:
   ## @param auth.rootPassword Password for the `root` user. Ignored if existing secret is provided
   ## ref: https://github.com/bitnami/bitnami-docker-mysql#setting-the-root-password-on-first-run
   ##
-  rootPassword: ""
+  rootPassword: "Ushijima123!"
   ## @param auth.database Name for a custom database to create
   ## ref: https://github.com/bitnami/bitnami-docker-mysql/blob/master/README.md#creating-a-database-on-first-run
   ##
-  database: my_database
+  database: whnlp_staging
   ## @param auth.username Name for a custom user to create
   ## ref: https://github.com/bitnami/bitnami-docker-mysql/blob/master/README.md#creating-a-database-user-on-first-run
   ##
-  username: ""
+  username: "whnlp"
   ## @param auth.password Password for the new user. Ignored if existing secret is provided
   ##
-  password: ""
+  password: "RGks352@#df"
   ## @param auth.replicationUser MySQL replication user
   ## ref: https://github.com/bitnami/bitnami-docker-mysql#setting-up-a-replication-cluster
   ##
@@ -174,7 +174,7 @@ primary:
     datadir=/bitnami/mysql/data
     tmpdir=/opt/bitnami/mysql/tmp
     max_allowed_packet=16M
-    bind-address=0.0.0.0
+    bind-address=172.16.0.0
     pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
     log-error=/opt/bitnami/mysql/logs/mysqld.log
     character-set-server=UTF8

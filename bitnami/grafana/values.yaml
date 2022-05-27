@@ -14,7 +14,7 @@ global:
   ##   - myRegistryKeySecretName
   ##
   imagePullSecrets: []
-  storageClass: ""
+  storageClass: "common"
 
 ## @section Common parameters
 
@@ -51,7 +51,7 @@ commonAnnotations: {}
 ## @param image.pullSecrets Grafana image pull secrets
 ##
 image:
-  registry: docker.io
+  registry: mirror.whnlp.k8s.com:8989
   repository: bitnami/grafana
   tag: 8.5.2-debian-10-r0
   ## Specify a imagePullPolicy
@@ -78,10 +78,10 @@ admin:
   user: "admin"
   ## @param admin.password Admin password. If a password is not provided a random password will be generated
   ##
-  password: ""
+  password: "RGks35@#df"
   ## @param admin.existingSecret Name of the existing secret containing admin password
   ##
-  existingSecret: ""
+  existingSecret: "RGks35@#df"
   ## @param admin.existingSecretPasswordKey Password key on the existing secret
   ##
   existingSecretPasswordKey: password
@@ -482,7 +482,7 @@ persistence:
   ##
   storageClass: ""
   annotations: {}
-  existingClaim: ""
+  existingClaim: "grafana"
   accessMode: ReadWriteOnce
   accessModes: []
   size: 10Gi

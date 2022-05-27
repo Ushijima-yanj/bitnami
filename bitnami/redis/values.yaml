@@ -16,9 +16,9 @@ global:
   ##   - myRegistryKeySecretName
   ##
   imagePullSecrets: []
-  storageClass: ""
+  storageClass: "redis-volume"
   redis:
-    password: ""
+    password: "hermes"
 
 ## @section Common parameters
 ##
@@ -76,9 +76,9 @@ diagnosticMode:
 ## @param image.debug Enable image debug mode
 ##
 image:
-  registry: docker.io
+  registry: mirror.zjjt.k8s.com:8989
   repository: bitnami/redis
-  tag: 6.2.7-debian-10-r0
+  tag: 6.0.16
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -136,7 +136,11 @@ commonConfiguration: |-
   # Enable AOF https://redis.io/topics/persistence#append-only-file
   appendonly yes
   # Disable RDB persistence, AOF persistence already enabled.
-  save ""
+  # save ""
+  # 每秒备份
+  appendfsync everysec
+  # 混合备份
+  aof-use-rdb-preamble yes
 ## @param existingConfigmap The name of an existing ConfigMap with your custom configuration for Redis&trade; nodes
 ##
 existingConfigmap: ""
@@ -248,8 +252,12 @@ master:
   ## @param master.resources.requests The requested resources for the Redis&trade; master containers
   ##
   resources:
-    limits: {}
-    requests: {}
+    limits: 
+      cpu: 1000m
+      memory: 1024Mi
+    requests: 
+      cpu: 500m
+      memory: 512Mi
   ## Configure Pods Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param master.podSecurityContext.enabled Enabled Redis&trade; master pods' Security Context
@@ -615,12 +623,12 @@ replica:
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    limits: {}
-    #   cpu: 250m
-    #   memory: 256Mi
-    requests: {}
-    #   cpu: 250m
-    #   memory: 256Mi
+    limits: 
+      cpu: 250m
+      memory: 256Mi
+    requests: 
+      cpu: 250m
+      memory: 256Mi
   ## Configure Pods Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param replica.podSecurityContext.enabled Enabled Redis&trade; replicas pods' Security Context
